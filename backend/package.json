@@ -1,0 +1,14 @@
+{
+  "name": "cukur-rusdi",
+  "version": "1.0.0",
+  "description": "Backend API for Barbershop Management System",
+  "main": "src/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": ["cukur-rusdi", "booking", "api"],
+  "author": "",
+  "license": "ISC"
+}

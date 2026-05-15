@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cukur Rusdi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--card:#161616;--border:#2a2a2a;--accent:#f5a623;--text:#f0f0f0;--muted:#666;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* AUTH */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(245,166,35,0.08) 0%,transparent 60%)}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:420px}
+.auth-logo{text-align:center;margin-bottom:32px}
+.auth-logo .icon{font-size:3rem;display:block;margin-bottom:8px}
+.auth-logo h1{font-size:1.4rem;font-weight:800;color:var(--accent)}
+.auth-logo p{font-size:0.8rem;color:var(--muted);margin-top:4px}
+.tabs{display:flex;background:#0d0d0d;border-radius:10px;padding:4px;margin-bottom:24px;gap:4px}
+.tab{flex:1;padding:8px;border:none;background:none;color:var(--muted);font-size:0.85rem;font-weight:600;border-radius:8px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.tab.active{background:var(--accent);color:#000}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:0.75rem;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+input{width:100%;background:#0d0d0d;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:0.875rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+input:focus{border-color:var(--accent)}
+.btn{width:100%;padding:13px;border-radius:10px;border:none;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-top:8px}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+.link-admin{text-align:center;margin-top:16px;font-size:0.8rem;color:var(--muted)}
+.link-admin a{color:var(--accent);text-decoration:none;font-weight:600}
+
+/* DASHBOARD */
+.app{display:none;flex-direction:column;min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr-logo{font-size:1rem;font-weight:800;color:var(--accent)}
+.hdr-user{display:flex;align-items:center;gap:10px;font-size:0.8rem;color:var(--muted)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem}
+.logout-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:0.75rem;cursor:pointer;font-family:inherit}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+.content{padding:20px;max-width:480px;margin:0 auto;width:100%}
+
+/* ANTREAN CARD */
+.queue-card{background:linear-gradient(135deg,var(--accent),#e07b00);border-radius:20px;padding:28px;margin-bottom:20px;color:#000;position:relative;overflow:hidden}
+.queue-card::before{content:'💈';position:absolute;right:-10px;top:-10px;font-size:6rem;opacity:0.15}
+.queue-label{font-size:0.75rem;font-weight:700;text-transform:uppercase;opacity:0.7;margin-bottom:4px}
+.queue-num{font-size:4rem;font-weight:800;line-height:1}
+.queue-info{display:flex;gap:20px;margin-top:16px}
+.queue-info-item .val{font-size:1.2rem;font-weight:700}
+.queue-info-item .key{font-size:0.7rem;opacity:0.7}
+
+/* SECTION */
+.section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.section-title{font-size:0.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px}
+
+/* STATUS BADGE */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700}
+.badge-menunggu{background:rgba(59,130,246,0.15);color:var(--blue)}
+.badge-proses{background:rgba(245,166,35,0.15);color:var(--accent)}
+.badge-selesai{background:rgba(34,197,94,0.15);color:var(--green)}
+.badge-batal{background:rgba(239,68,68,0.15);color:var(--red)}
+
+/* BOOKING FORM */
+.select-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+select{width:100%;background:#0d0d0d;border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:0.85rem;font-family:inherit;outline:none}
+select:focus{border-color:var(--accent)}
+
+/* NOTIF */
+.notif-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.notif-item:last-child{border-bottom:none}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:4px;flex-shrink:0}
+.notif-dot.read{background:var(--border)}
+.notif-msg{font-size:0.85rem;color:var(--text);line-height:1.4}
+.notif-time{font-size:0.72rem;color:var(--muted);margin-top:3px}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;cursor:pointer;color:var(--muted);font-size:0.65rem;font-weight:600;border:none;background:none;font-family:inherit;transition:color 0.2s}
+.nav-item.active{color:var(--accent)}
+.nav-item .ico{font-size:1.3rem}
+.page-content{display:none;padding-bottom:80px}
+.page-content.active{display:block}
+
+/* TOAST */
+#toast{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--border);padding:12px 16px;border-radius:12px;font-size:0.83rem;font-weight:600;transform:translateY(-100px);opacity:0;transition:all 0.3s;z-index:999;max-width:280px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{border-color:var(--green);color:var(--green)}
+#toast.err{border-color:var(--red);color:var(--red)}
+
+/* BARBER CARDS */
+.barber-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.barber-card{background:#0d0d0d;border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s}
+.barber-card:hover,.barber-card.selected{border-color:var(--accent);background:rgba(245,166,35,0.05)}
+.barber-avatar{width:48px;height:48px;border-radius:50%;background:var(--accent);color:#000;font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.barber-name{font-size:0.82rem;font-weight:700}
+.barber-rating{font-size:0.7rem;color:var(--muted)}
+
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:0.85rem}
+.spinner{text-align:center;padding:20px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <span class="icon">✂️</span>
+      <h1>Cukur</h1>
+      <p>Sistem Antrean Pangkas Rambut Digital</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Masuk</button>
+      <button class="tab" onclick="switchTab('register')">Daftar</button>
+    </div>
+
+    <div id="tabLogin">
+      <div class="form-group"><label>Username</label><input id="lUser" type="text" placeholder="sulis123"/></div>
+      <div class="form-group"><label>Password</label><input id="lPass" type="password" placeholder="••••••"/></div>
+      <button class="btn btn-primary" onclick="doLogin()">Masuk →</button>
+    </div>
+
+    <div id="tabRegister" style="display:none">
+      <div class="form-group"><label>Nama Lengkap</label><input id="rNama" type="text" placeholder="Budi Santoso"/></div>
+      <div class="form-group"><label>Username</label><input id="rUser" type="text" placeholder="budisantoso"/></div>
+      <div class="form-group"><label>Email (opsional)</label><input id="rEmail" type="email" placeholder="budi@email.com"/></div>
+      <div class="form-group"><label>Password</label><input id="rPass" type="password" placeholder="min 6 karakter"/></div>
+      <button class="btn btn-primary" onclick="doRegister()">Daftar Sekarang →</button>
+    </div>
+
+    <p class="link-admin">Kamu kasir? <a href="kasir.html">Masuk sebagai Admin →</a></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="app" id="appWrap">
+  <header>
+    <div class="hdr-logo">Cukur Rusdi</div>
+    <div class="hdr-user">
+      <div class="avatar" id="avatarInitial">B</div>
+      <span id="namaUser">Pelanggan</span>
+      <button class="logout-btn" onclick="doLogout()">Keluar</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- ANTREAN -->
+    <div class="page-content active" id="pgAntrean">
+      <div class="queue-card" id="queueCard">
+        <div class="queue-label">Posisi Antrean Kamu</div>
+        <div class="queue-num" id="queueNum">—</div>
+        <div class="queue-info">
+          <div class="queue-info-item"><div class="val" id="queueEst">— mnt</div><div class="key">Estimasi Tunggu</div></div>
+          <div class="queue-info-item"><div class="val" id="queueBarber">—</div><div class="key">Barber</div></div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:0.8rem;margin-top:20px">
+        Silakan datang ke barbershop jika estimasi waktu tunggu sudah mendekati 10 menit.
+      </p>
+    </div>
+
+    <!-- BOOKING BARU -->
+    <div class="page-content" id="pgBooking">
+      <div class="section">
+        <div class="section-title">Pilih Barber</div>
+        <div class="barber-grid" id="barberGrid"><div class="spinner">Memuat...</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Pilih Layanan & Kursi</div>
+        <div class="select-grid">
+          <div><label style="font-size:0.72rem;color:var(--muted);display:block;margin-bottom:6px">LAYANAN</label>
+            <select id="selLayanan"><option value="">Pilih layanan</option></select></div>
+          <div><label style="font-size:0.72rem;color:var(--muted);display:block;margin-bottom:6px">KURSI</label>
+            <select id="selKursi"><option value="">Pilih kursi</option></select></div>
+        </div>
+        <button id="btnSubmitBooking" class="btn btn-primary" style="margin-top:16px" onclick="doBooking()">📅 Buat Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="navAntrean" onclick="goPage('Antrean')"><span class="ico">📊</span>Antrean</button>
+    <button class="nav-item" id="navBooking" onclick="goPage('Booking')"><span class="ico">📅</span>Booking Baru</button>
+  </nav>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:3000/api/v1';
+let TOKEN = localStorage.getItem('bs_token') || '';
+let USER  = JSON.parse(localStorage.getItem('bs_user') || 'null');
+let selectedBarber = null;
+
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show ' + type;
+  setTimeout(() => el.className = '', 3000);
+}
+
+async function req(method, path, body, auth=false) {
+  const h = {'Content-Type':'application/json'};
+  if (auth && TOKEN) h['Authorization'] = 'Bearer ' + TOKEN;
+  const r = await fetch(API + path, {method, headers:h, body: body ? JSON.stringify(body) : undefined});
+  return r.json();
+}
+
+function switchTab(t) {
+  document.getElementById('tabLogin').style.display    = t==='login'    ? 'block' : 'none';
+  document.getElementById('tabRegister').style.display = t==='register' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', (i===0) === (t==='login')));
+}
+
+async function doLogin() {
+  const username = document.getElementById('lUser').value;
+  const password = document.getElementById('lPass').value;
+  if (!username || !password) return toast('Isi semua field','err');
+  try {
+    const d = await req('POST','/auth/login',{username,password});
+    if (d.status==='success') { TOKEN=d.token; USER=d.data; localStorage.setItem('bs_token',TOKEN); localStorage.setItem('bs_user',JSON.stringify(USER)); showApp(); }
+    else toast(d.message,'err');
+  } catch(e) { toast('Server tidak bisa dijangkau','err'); }
+}
+
+async function doRegister() {
+  const nama=document.getElementById('rNama').value, username=document.getElementById('rUser').value,
+        email=document.getElementById('rEmail').value, password=document.getElementById('rPass').value;
+  if (!nama||!username||!password) return toast('Isi field yang wajib','err');
+  try {
+    const d = await req('POST','/auth/register',{nama,username,email,password});
+    if (d.status==='success') { toast('Registrasi berhasil! Silakan login'); switchTab('login'); }
+    else toast(d.message,'err');
+  } catch(e) { toast('Server tidak bisa dijangkau','err'); }
+}
+
+function doLogout() {
+  TOKEN=''; USER=null; localStorage.clear();
+  document.getElementById('appWrap').style.display='none';
+  document.getElementById('authWrap').style.display='flex';
+}
+
+function showApp() {
+  document.getElementById('authWrap').style.display='none';
+  document.getElementById('appWrap').style.display='flex';
+  document.getElementById('namaUser').textContent = USER?.nama || 'Pelanggan';
+  document.getElementById('avatarInitial').textContent = (USER?.nama||'P')[0].toUpperCase();
+  loadBookingPage(); loadAntrean();
+}
+
+function goPage(name) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('pg'+name).classList.add('active');
+  document.getElementById('nav'+name).classList.add('active');
+}
+
+async function loadAntrean() {
+  if (!USER) return;
+  try {
+    const d = await req('GET','/antrean',null,true);
+    if (d.data && d.data.length > 0) {
+      const mine = d.data.find(a => a.pelanggan_id === USER.id && a.status !== 'selesai' && a.status !== 'batal');
+      if (mine) {
+        if (mine.status === 'proses') {
+          document.getElementById('queueNum').textContent   = 'GILIRANMU!';
+          document.getElementById('queueNum').style.fontSize = '2.5rem';
+          document.getElementById('queueNum').style.color = '#fff';
+          document.getElementById('queueEst').textContent  = 'Sekarang';
+          document.getElementById('queueBarber').textContent = mine.barber_nama || '—';
+          document.querySelector('.queue-label').textContent = 'STATUS SAAT INI';
+        } else {
+          document.getElementById('queueNum').textContent   = '#' + mine.posisi_antrean;
+          document.getElementById('queueNum').style.fontSize = '4rem';
+          document.getElementById('queueEst').textContent  = mine.estimasi_menit + ' mnt';
+          document.getElementById('queueBarber').textContent = mine.barber_nama || '—';
+          document.querySelector('.queue-label').textContent = 'Posisi Antrean Kamu';
+        }
+      } else {
+        document.getElementById('queueNum').textContent   = '—';
+        document.getElementById('queueNum').style.fontSize = '4rem';
+        document.getElementById('queueEst').textContent  = '— mnt';
+        document.getElementById('queueBarber').textContent = '—';
+        document.querySelector('.queue-label').textContent = 'Posisi Antrean Kamu';
+      }
+    }
+  } catch(e) {}
+}
+
+async function loadBookingPage() {
+  // Load barbers
+  try {
+    const d = await req('GET','/barber');
+    const grid = document.getElementById('barberGrid');
+    if (!d.data || d.data.length===0) { grid.innerHTML='<div class="empty" style="grid-column:1/-1">Belum ada barber</div>'; return; }
+    grid.innerHTML = d.data.map(b => `
+      <div class="barber-card" id="bc-${b.id}" onclick="selectBarber('${b.id}','${b.nama}')">
+        <div class="barber-avatar">${b.nama[0]}</div>
+        <div class="barber-name">${b.nama}</div>
+        <div class="barber-rating">⭐ ${b.rating||0}</div>
+      </div>`).join('');
+  } catch(e) {}
+
+  // Load layanan
+  try {
+    const d = await req('GET','/layanan');
+    const sel = document.getElementById('selLayanan');
+    sel.innerHTML = '<option value="">Pilih layanan</option>';
+    (d.data||[]).forEach(l => { const o=document.createElement('option'); o.value=l.id; o.textContent=`${l.nama} — Rp${Number(l.harga).toLocaleString('id')} (${l.durasi_menit}mnt)`; sel.appendChild(o); });
+  } catch(e) {}
+
+  // Load kursi
+  try {
+    const d = await req('GET','/kursi');
+    const sel = document.getElementById('selKursi');
+    const btnBooking = document.getElementById('btnSubmitBooking');
+    const msgFull = document.getElementById('msgKursiPenuh');
+    
+    sel.innerHTML = '<option value="">Pilih kursi</option>';
+    const kosong = (d.data||[]).filter(k=>k.status==='kosong');
+    
+    if (kosong.length === 0) {
+      sel.innerHTML = '<option value="">Semua Kursi Penuh</option>';
+      sel.disabled = true;
+      if(btnBooking) btnBooking.disabled = true;
+      if(!msgFull) {
+        const msg = document.createElement('div');
+        msg.id = 'msgKursiPenuh';
+        msg.style.color = 'var(--red)';
+        msg.style.fontSize = '0.75rem';
+        msg.style.marginTop = '8px';
+        msg.innerHTML = '⚠️ Maaf, semua kursi saat ini sedang terisi/penuh. Silakan tunggu beberapa saat lagi.';
+        sel.parentNode.appendChild(msg);
+      }
+    } else {
+      sel.disabled = false;
+      if(btnBooking) btnBooking.disabled = false;
+      if(msgFull) msgFull.remove();
+      kosong.forEach(k => { 
+        const o=document.createElement('option'); 
+        o.value=k.id; 
+        o.textContent=`Kursi ${k.nomor_kursi}`; 
+        sel.appendChild(o); 
+      });
+    }
+  } catch(e) {}
+}
+
+function selectBarber(id, nama) {
+  selectedBarber = id;
+  document.querySelectorAll('.barber-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bc-'+id).classList.add('selected');
+}
+
+async function doBooking() {
+  if (!selectedBarber) return toast('Pilih barber dulu','err');
+  const layanan_id = document.getElementById('selLayanan').value;
+  const kursi_id   = document.getElementById('selKursi').value;
+  if (!layanan_id || !kursi_id) return toast('Pilih layanan & kursi','err');
+  try {
+    const d = await req('POST','/booking',{barber_id:selectedBarber, layanan_id, kursi_id}, true);
+    if (d.status==='success') { toast('Booking berhasil! Cek antrean kamu'); goPage('Antrean'); loadAntrean(); }
+    else toast(d.message,'err');
+  } catch(e) { toast('Gagal membuat booking','err'); }
+}
+
+// Init
+if (TOKEN && USER) showApp();
+</script>
+</body>
+</html>
